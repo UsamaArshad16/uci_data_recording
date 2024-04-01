@@ -8,7 +8,7 @@ pyaudio ``` sudo apt-get install python3-pyaudio```\
 pyusb ``` sudo pip3 install pyusb click```
 
 ## Clone this repo
-   ```   git clone https://aliahmadXVR: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@github.com/Xavorcorp/uci_data_recording.git ```
+   ```   git clone https://github.com/UsamaArshad16/uci_data_recording.git ```
 
 ## Scripts
 
@@ -44,6 +44,10 @@ This sh file runs all the scripts in a sequence on Jetson Nano.
 ### setup_recording_xavier.sh
 This sh file runs all the scripts in a sequence on Jetson Xavier.
 
+### k4a_orbbec_alteration.sh
+This sh file alters the k4a SDK and enable it for Orbbec Camera.
+``` chmod +x k4a_orbbec_alteration.sh ```\
+``` ./k4a_orbbec_alteration.sh ```
 
 ## Start the recordings
 Make sure the files are executable and edit the code, set the parameters according to the desired values and generate binaries using command given above.\
