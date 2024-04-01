@@ -1,4 +1,22 @@
 #!/bin/bash
+echo "Starting Installation from Script--------------------------------"
+
+sudo curl -sSL -O https://packages.microsoft.com/config/ubuntu/18.04/multiarch/packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+sudo apt-get update
+
+# Installing Relevant k4a Packages
+sudo apt-get install libk4a1.4
+sudo apt-get install libk4a1.4-dev
+sudo apt-get install k4a-tools
+
+cd ~
+git clone https://github.com/microsoft/Azure-Kinect-Sensor-SDK
+cd Azure-Kinect-Sensor-SDK
+sudo cp scripts/99-k4a.rules /etc/udev/rules.d/
+cd ~
+sudo rm -r Azure-Kinect-Sensor-SDK/
 
 cd ~
 
