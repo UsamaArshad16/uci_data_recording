@@ -45,7 +45,7 @@ This sh file runs all the scripts in a sequence on Jetson Nano.
 This sh file runs all the scripts in a sequence on Jetson Xavier.
 
 ### k4a_orbbec_alteration.sh
-This sh file alters the k4a SDK and enable it for Orbbec Camera.
+This sh file install and alters the k4a SDK and enable it for Orbbec Camera.
 ``` chmod +x k4a_orbbec_alteration.sh ```\
 ``` ./k4a_orbbec_alteration.sh ```
 
