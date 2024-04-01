@@ -1,0 +1,24 @@
+This file is for personal notes
+k4a installation link 
+https://github.com/microsoft/Azure_Kinect_ROS_Driver
+https://github.com/microsoft/Azure_Kinect_ROS_Driver/blob/melodic/docs/building.md
+https://gist.github.com/madelinegannon/c212dbf24fc42c1f36776342754d81bc
+https://github.com/microsoft/Azure-Kinect-Sensor-SDK/issues/1263#issuecomment-710698591
+
+opencv required
+pyaudio required
+pyusb required
+k4a required
+
+sudo apt-get install portaudio19-dev python-pyaudio
+sudo pip3 install pyaudio
+sudo pip3 install pyusb click
+
+g++ record_azure.cpp -o record_azure -lk4a `pkg-config --cflags --libs opencv4`
+
+
+pyaudio
+sudo apt-get install python3-pyaudio
+
+
+
