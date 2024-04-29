@@ -14,6 +14,9 @@
 #include <k4a/k4a.h>
 #include <time.h>
 #include <string>
+#include <pcl/io/pcd_io.h>
+#include <pcl/point_types.h>
+#include <pcl/point_cloud.h>
 
 #define FPS 15
 #define timeout_person_detection 10
@@ -145,7 +148,7 @@ if (fileExists.good()) {
     // Save images and point cloud for 1 minute (10 seconds * 15 fps)
     int frame_count = 0;
     // Find the highest numbered file in the "orbbec_recordings/rgb_images" folder
-    int image_sequence = getHighestNumberedFile(rgb_folder) + 1;
+    unsigned int image_sequence = getHighestNumberedFile(rgb_folder) + 1;
     printf("rgb & point cloud recording started\n");
 
     // Load YOLO model and COCO class names
@@ -186,8 +189,6 @@ if (fileExists.good()) {
             }
         }
 
-
-
         // Access the color image
         k4a_capture_t capture;
         k4a_wait_result_t result = k4a_device_get_capture(device, &capture, 0);
@@ -215,9 +216,7 @@ if (fileExists.good()) {
                 char timestamp[256];
                 snprintf(timestamp, sizeof(timestamp), "_%lld", timestamp_millis);
 
-                // Save the image with a timestamp
-                char filename[1024];
-                snprintf(filename, sizeof(filename), "%s/image_%d%s.jpg", rgb_folder, image_sequence, timestamp);
+
 
 
                 // Use OpenCV to save the image
@@ -265,6 +264,7 @@ if (fileExists.good()) {
                 }
 
             if (personDetected) {
+
                 // Start recording if not already recording
                 if (!recording) {
                     std::cout << "Person detected, recording started" << std::endl;
@@ -279,7 +279,40 @@ if (fileExists.good()) {
                 }
             }
 
-            if (recording) {
+            // Create a point cloud
+            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+            // Get the depth image data and size
+            k4a_image_t depth_image = k4a_capture_get_depth_image(capture);
+            int depth_width = k4a_image_get_width_pixels(depth_image);
+            int depth_height = k4a_image_get_height_pixels(depth_image);
+            uint16_t* depth_data = (uint16_t*)k4a_image_get_buffer(depth_image);
+
+            // Generate the point cloud from the depth image
+            for (int y = 0; y < depth_height; y++)
+            {
+                for (int x = 0; x < depth_width; x++)
+                {
+                    uint16_t depth_value = depth_data[y * depth_width + x];
+                    float point_x = (float)x;
+                    float point_y = (float)y;
+                    float point_z = (float)depth_value / 1000.0f; // Convert mm to meters
+
+                    pcl::PointXYZ point;
+                    point.x = point_x;
+                    point.y = point_y;
+                    point.z = point_z;
+                    cloud->push_back(point);
+                }
+            }
+
+
+        if (recording)
+        {
+                // Save the image with a timestamp
+                char filename[1024];
+                snprintf(filename, sizeof(filename), "%s/image_%d%s.jpg", rgb_folder, image_sequence, timestamp);
+
                 // Save the image
                 cv::imwrite(filename, cv_image);
 
@@ -296,56 +329,17 @@ if (fileExists.good()) {
                 } else {
                     recording_duration++;
                 }
-            }
+            // Save the point cloud in PCD format with a timestamp
+            char pc_filename[1024];
+            snprintf(pc_filename, sizeof(pc_filename), "%s/pointcloud_%d%s.pcd", pc_folder, image_sequence, timestamp);
+            pcl::io::savePCDFileBinaryCompressed(pc_filename, *cloud);
+            image_sequence++;
+        }
 
-            // Access the depth image
-            k4a_image_t depth_image = k4a_capture_get_depth_image(capture);
-            if (depth_image != NULL)
-            {
-                // Get the depth image data and size
-                uint16_t *depth_data = (uint16_t *)k4a_image_get_buffer(depth_image);
-                int depth_width = k4a_image_get_width_pixels(depth_image);
-                int depth_height = k4a_image_get_height_pixels(depth_image);
+        // Release color image
+        k4a_image_release(color_image);
+        k4a_image_release(depth_image);
 
-                // Generate the point cloud from the depth image
-                int point_cloud_index = 0;
-                for (int y = 0; y < depth_height; y++)
-                {
-                    for (int x = 0; x < depth_width; x++)
-                    {
-                        // Get the depth value at the current pixel
-                        uint16_t depth_value = depth_data[y * depth_width + x];
-
-                        // Calculate the 3D coordinates of the pixel
-                        float point_x = (float)x;
-                        float point_y = (float)y;
-                        float point_z = (float)depth_value;
-
-                        // Store the point in the point cloud buffer
-                        point_cloud_buffer[point_cloud_index++] = point_x;
-                        point_cloud_buffer[point_cloud_index++] = point_y;
-                        point_cloud_buffer[point_cloud_index++] = point_z;
-                    }
-                }
-// // Print the shape of the point cloud
-// int num_points = point_cloud_index / 3; // Each point has x, y, z coordinates
-// int cloud_height = depth_height;
-// int cloud_width = depth_width;
-// printf("Point cloud shape: (%d, %d, 3)\n", cloud_height, cloud_width);
-
-            if (recording) {
-                // Save the point cloud with a timestamp
-                char pc_filename[1024];
-                snprintf(pc_filename, sizeof(pc_filename), "%s/pointcloud_%d%s.npy", pc_folder, image_sequence, timestamp);
-                FILE *pc_file = fopen(pc_filename, "wb");
-                fwrite(point_cloud_buffer, sizeof(float), point_cloud_index, pc_file);
-                fclose(pc_file);
-                image_sequence++;
-            }
-
-                // Release the depth image
-                k4a_image_release(depth_image);
-            }
 
                 // Control frame rate
                 if (frame_count > 0)
@@ -359,11 +353,14 @@ if (fileExists.good()) {
 
                 last_frame_time = current_frame_time;
                 frame_count++;
+                if (frame_count > 150)
+                    {
+                        frame_count = 1;
+                    }
+                    //std::cout << "Frame count: " << frame_count << std::endl;
 
-
-                // Release color image
-                k4a_image_release(color_image);
             }
+
             k4a_capture_release(capture);
         }
     }
