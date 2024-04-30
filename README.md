@@ -34,7 +34,7 @@ This sh file runs all the scripts in a sequence on Jetson Xavier.
 This sh file installs and alters the k4a SDK and enables it for Orbbec Camera.
 
 ## Installation
-pip3 ```sudo apt install Python3-pip```\
+pip3 ```sudo apt-get -y install python3-pip```\
 open-cv ```pip3 install opencv-python```\
 pyaudio ``` sudo apt-get install python3-pyaudio```\
 pyusb ``` sudo pip3 install pyusb click```\
