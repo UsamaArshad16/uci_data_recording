@@ -44,8 +44,8 @@ pcl ```sudo apt-get install libpcl-dev```
 ``` cd uci_data_recording ```\
 ``` chmod +x k4a_orbbec_alteration.sh ```\
 ``` ./k4a_orbbec_alteration.sh ```
-## Build the record_azure.cpp
-```g++ record_azure.cpp -o record_azure -lk4a `pkg-config --cflags --libs opencv4` -lpcl_common -lpcl_io```\
+### Build the record_azure.cpp
+```g++ record_azure.cpp -o record_azure -lk4a `pkg-config --cflags --libs opencv4` -lpcl_common -lpcl_io```
 
 If the **above command does not work** then provide the paths as well.\
 Assuming your PCL headers are located in a standard directory like **/usr/include/pcl-1.10**, you can modify your command like this\
@@ -53,7 +53,5 @@ Assuming your PCL headers are located in a standard directory like **/usr/includ
 
 ## Start the recordings
 Make sure the files are executable and edit the code, set the parameters according to the desired values, and generate binaries using the command given above.\
-Open the terminal and use the commands below \
-``` cd uci_data_recording ```\
 ``` chmod +x setup_recordings_xavier.sh ```\
 ``` ./setup_recordings_xavier.sh ```
