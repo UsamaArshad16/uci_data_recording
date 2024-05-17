@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import time
 
 RESPEAKER_RATE = 16000
-RESPEAKER_CHANNELS = 6  # Change based on firmwares, 1_channel_firmware.bin as 1 or 6_channels_firmware.bin as 6
+RESPEAKER_CHANNELS = 1  # Change based on firmwares, 1_channel_firmware.bin as 1 or 6_channels_firmware.bin as 6
 RESPEAKER_WIDTH = 2
 # Run getDeviceInfo.py to get the index
 RESPEAKER_INDEX = 0  # Refer to the input device id
