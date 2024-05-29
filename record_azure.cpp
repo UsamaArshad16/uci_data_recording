@@ -63,7 +63,7 @@ int getHighestNumberedFile(const char *folder)
 }
 
 int main() {
-const std::string check_filename = "check.txt";
+const std::string check_filename = "/home/orin2/uci_data_recording/check.txt";
 bool recording = false; // Flag to track recording state
 int recording_duration = 0; // Duration of the current recording in frames
 
@@ -152,7 +152,7 @@ if (fileExists.good()) {
     printf("rgb & point cloud recording started\n");
 
     // Load YOLO model and COCO class names
-    cv::dnn::Net net = cv::dnn::readNet("yolov3-tiny.weights", "yolov3-tiny.cfg");
+    cv::dnn::Net net = cv::dnn::readNet("/home/orin2/uci_data_recording/yolov3-tiny.weights", "/home/orin2/uci_data_recording/yolov3-tiny.cfg");
     std::ifstream classFile("coco.names");
     std::vector<std::string> classes;
     std::string className;
