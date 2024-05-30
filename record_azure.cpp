@@ -109,7 +109,8 @@ if (fileExists.good()) {
         k4a_device_close(device);
         return 1;
     }
-
+    // Add a 2-second delay after starting the cameras
+    usleep(2000000);
     // Create a buffer to hold the image data
     size_t buffer_size = 1920 * 1080 * 4;
     uint8_t *buffer = (uint8_t *)malloc(buffer_size);
