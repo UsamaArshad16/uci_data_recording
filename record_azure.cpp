@@ -20,7 +20,7 @@
 
 #define FPS 15
 #define timeout_person_detection 10
-double max_size = 35; // in GBs
+double max_size = 15; // in GBs
 #define FRAME_INTERVAL (1000000 / FPS)
 
 bool personDetected = false; // Flag to track if a person is detected
@@ -63,7 +63,7 @@ int getHighestNumberedFile(const char *folder)
 }
 
 int main() {
-const std::string check_filename = "check.txt";
+const std::string check_filename = "/home/orin2/uci_data_recording/check.txt";
 bool recording = false; // Flag to track recording state
 int recording_duration = 0; // Duration of the current recording in frames
 
@@ -110,6 +110,9 @@ if (fileExists.good()) {
         return 1;
     }
 
+    // Add a 2-second delay after starting the cameras
+    usleep(2000000);
+
     // Create a buffer to hold the image data
     size_t buffer_size = 1920 * 1080 * 4;
     uint8_t *buffer = (uint8_t *)malloc(buffer_size);
@@ -152,7 +155,7 @@ if (fileExists.good()) {
     printf("rgb & point cloud recording started\n");
 
     // Load YOLO model and COCO class names
-    cv::dnn::Net net = cv::dnn::readNet("yolov3-tiny.weights", "yolov3-tiny.cfg");
+    cv::dnn::Net net = cv::dnn::readNet("/home/orin2/uci_data_recording/yolov3-tiny.weights", "/home/orin2/uci_data_recording/yolov3-tiny.cfg");
     std::ifstream classFile("coco.names");
     std::vector<std::string> classes;
     std::string className;
