@@ -7,6 +7,11 @@ import time
 from pathlib import Path
 import getpass
 
+# Get the current username
+import getpass
+username = getpass.getuser()
+#print("USERNAME:", username)
+
 RESPEAKER_RATE = 16000
 RESPEAKER_CHANNELS = 1  # Change based on firmwares, 1_channel_firmware.bin as 1 or 6_channels_firmware.bin as 6
 RESPEAKER_WIDTH = 2
@@ -26,7 +31,8 @@ for i in range(0, numdevices):
 
 frames = []
 start_check = False
-check_filename = "/home/orin2/uci_data_recording/check.txt"
+check_filename = f"/home/{username}/uci_data_recording/check.txt"
+print("The Check Path:", check_filename)
 
 def check_file_for_string():
     try:
@@ -58,7 +64,7 @@ print("*audio recording thread started")
 #############################
 
 
-username = getpass.getuser()
+# username = getpass.getuser()
 
 # If the script is run without sudo, use the current user's home directory
 if username is None:
