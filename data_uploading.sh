@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Get the current username
-# USERNAME=$(whoami)
-# echo "$USERNAME"
+USERNAME=$(whoami)
+echo "$USERNAME"
 
 echo "Starting data uploading Script--------------------------------"
 
