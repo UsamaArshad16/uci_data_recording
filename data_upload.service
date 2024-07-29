@@ -1,0 +1,15 @@
+[Unit]
+Description=Data Upload Service
+After=network.target
+
+[Service]
+Type=simple
+
+#### Change the Username from orin2 to your system's Username
+User=orin2
+ExecStart=/bin/bash /home/orin2/uci_data_recording/data_uploading.sh
+Environment="HOME=/home/orin2/uci_data_recording"
+Environment="USER=orin2"
+
+[Install]
+WantedBy=multi-user.target
