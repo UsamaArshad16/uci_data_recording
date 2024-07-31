@@ -17,6 +17,8 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
+#include <cstdlib>
+
 
 #define FPS 15
 #define timeout_person_detection 10
@@ -63,7 +65,16 @@ int getHighestNumberedFile(const char *folder)
 }
 
 int main() {
-const std::string check_filename = "/home/orin2/uci_data_recording/check.txt";
+
+// Get the HOME environment variable
+const char* homeDir = std::getenv("HOME");
+
+if (homeDir == nullptr) {
+    std::cerr << "Unable to find home directory." << std::endl;
+    return 1;
+}
+
+const std::string check_filename = std::string(homeDir) +  "/uci_data_recording/check.txt";
 bool recording = false; // Flag to track recording state
 int recording_duration = 0; // Duration of the current recording in frames
 
@@ -155,7 +166,7 @@ if (fileExists.good()) {
     printf("rgb & point cloud recording started\n");
 
     // Load YOLO model and COCO class names
-    cv::dnn::Net net = cv::dnn::readNet("/home/orin2/uci_data_recording/yolov3-tiny.weights", "/home/orin2/uci_data_recording/yolov3-tiny.cfg");
+    cv::dnn::Net net = cv::dnn::readNet(std::string(homeDir) + "/uci_data_recording/yolov3-tiny.weights", std::string(homeDir) + "/uci_data_recording/yolov3-tiny.cfg");
     std::ifstream classFile("coco.names");
     std::vector<std::string> classes;
     std::string className;
@@ -214,13 +225,9 @@ if (fileExists.good()) {
                 gettimeofday(&tv, NULL);
                 long long timestamp_millis = (long long)tv.tv_sec * 1000LL + tv.tv_usec / 1000;
 
-
                 // Construct the timestamp string
                 char timestamp[256];
                 snprintf(timestamp, sizeof(timestamp), "_%lld", timestamp_millis);
-
-
-
 
                 // Use OpenCV to save the image
                 cv::Mat cv_image(1080, 1920, CV_8UC4, buffer);
