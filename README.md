@@ -46,8 +46,8 @@ pcl ```sudo apt-get install libpcl-dev```
 ``` ./k4a_orbbec_alteration.sh ```
 ### Build the record_azure.cpp
 Assuming your PCL headers are located in a standard directory like **/usr/include/pcl-1.10**, you can modify your command like this\
-```g++ record_azure.cpp -o record_azure -lk4a `pkg-config --cflags --libs opencv4` -l pcl_io -l pcl_common -I/usr/include/pcl-1.10 -I/usr/include/eigen3```
-and also
+```g++ record_azure.cpp -o record_azure -lk4a `pkg-config --cflags --libs opencv4` -l pcl_io -l pcl_common -I/usr/include/pcl-1.10 -I/usr/include/eigen3```\
+and also\
 ```g++ record_azure_display.cpp -o record_azure_display -lk4a `pkg-config --cflags --libs opencv4` -l pcl_io -l pcl_common -I/usr/include/pcl-1.10 -I/usr/include/eigen3```
 
 
