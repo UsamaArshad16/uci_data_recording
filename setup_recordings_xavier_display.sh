@@ -18,7 +18,7 @@ python3 /home/$USERNAME/uci_data_recording/point_cloud_uploading.py & pc_pid=$!
 python3 /home/$USERNAME/uci_data_recording/audio_uploading.py & audio_pid=$!
 
 # Trap Ctrl+C and forcefully terminate processes
-trap 'kill -9 $record_azure_pid $record_audio_pid $rgb_pid $pc_pid $audio_pid' INT
+trap 'kill -9 $record_azure_display_pid $record_audio_pid $rgb_pid $pc_pid $audio_pid' INT
 
 # Wait for any background process to finish
 wait
