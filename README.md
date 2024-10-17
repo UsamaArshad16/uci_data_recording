@@ -45,13 +45,17 @@ pcl ```sudo apt-get install libpcl-dev```
 ``` chmod +x k4a_orbbec_alteration.sh ```\
 ``` ./k4a_orbbec_alteration.sh ```
 ### Build the record_azure.cpp
-```g++ record_azure.cpp -o record_azure -lk4a `pkg-config --cflags --libs opencv4` -lpcl_common -lpcl_io```
-
-If the **above command does not work** then provide the paths as well.\
 Assuming your PCL headers are located in a standard directory like **/usr/include/pcl-1.10**, you can modify your command like this\
 ```g++ record_azure.cpp -o record_azure -lk4a `pkg-config --cflags --libs opencv4` -l pcl_io -l pcl_common -I/usr/include/pcl-1.10 -I/usr/include/eigen3```
+and also
+```g++ record_azure_display.cpp -o record_azure_display -lk4a `pkg-config --cflags --libs opencv4` -l pcl_io -l pcl_common -I/usr/include/pcl-1.10 -I/usr/include/eigen3```
 
-## Start the recordings
+
+## Start the recordings without display
 Make sure the files are executable and edit the code, set the parameters according to the desired values, and generate binaries using the command given above.\
 ``` chmod +x setup_recordings_xavier.sh ```\
 ``` ./setup_recordings_xavier.sh ```
+
+## Start the recordings with display
+``` chmod +x setup_recordings_xavier_display.sh ```\
+``` ./setup_recordings_xavier_display.sh ```
