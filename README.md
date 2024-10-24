@@ -1,6 +1,6 @@
 # azure_recording_setup
 ## Clone this repo
-   ```git clone https://github.com/UsamaArshad16/uci_data_recording.git -b orbbec_k4a_pcl```
+   ```git clone https://github.com/UsamaArshad16/uci_data_recording.git -b uci_local_network```
 
 ## Scripts
 
@@ -38,7 +38,8 @@ pip3 ```sudo apt-get -y install python3-pip```\
 open-cv ```pip3 install opencv-python```\
 pyaudio ``` sudo apt-get install python3-pyaudio```\
 pyusb ``` sudo pip3 install pyusb click```\
-pcl ```sudo apt-get install libpcl-dev```
+pcl ```sudo apt-get install libpcl-dev```\
+netifaces ```pip3 install netifaces```
 
 ### k4a and orbbec alteration
 ``` cd uci_data_recording ```\
@@ -54,8 +55,12 @@ and also\
 ## Start the recordings without display
 Make sure the files are executable and edit the code, set the parameters according to the desired values, and generate binaries using the command given above.\
 ``` chmod +x setup_recordings_xavier.sh ```\
-``` ./setup_recordings_xavier.sh ```
+``` ./setup_recordings_xavier.sh patient_id```\
+i.e\
+``` ./setup_recordings_xavier.sh 5```
 
 ## Start the recordings with display
 ``` chmod +x setup_recordings_xavier_display.sh ```\
-``` ./setup_recordings_xavier_display.sh ```
+``` ./setup_recordings_xavier_display.sh patient_id```\
+i.e\
+``` ./setup_recordings_xavier_display.sh 5```
