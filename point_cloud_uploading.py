@@ -16,15 +16,15 @@ def get_mac_address():
         return None
 
 # Function to upload files in the folder
-def upload_files_in_folder(url, folder_path, token, patient_id, device_id):
+def upload_files_in_folder(url, folder_path, token, patient_id, device_id, proxies):
     for root, _, files in os.walk(folder_path):
         for file in files:
             file_path = os.path.join(root, file)
-            if upload_file(url, file_path, token, patient_id, device_id):
+            if upload_file(url, file_path, token, patient_id, device_id, proxies):
                 delete_file(file_path)
 
 # Function to upload a single file
-def upload_file(url, file_path, token, patient_id, device_id):
+def upload_file(url, file_path, token, patient_id, device_id, proxies):
     try:
         with open(file_path, 'rb') as file:
             files = {'file': file}
@@ -33,7 +33,7 @@ def upload_file(url, file_path, token, patient_id, device_id):
                 'deviceId': device_id
             }
             headers = {'Authorization': token}
-            response = requests.post(url, files=files, data=data, headers=headers)
+            response = requests.post(url, files=files, data=data, headers=headers, proxies=proxies)
 
             if response.status_code == 200:
                 print(f"File '{file_path}' uploaded successfully.")
@@ -62,6 +62,11 @@ if __name__ == "__main__":
     # Set up the server URL and authorization token
     url = "http://172.27.130.93:3000/upload"  # Local server URL
     token = "token1_here"  # Authorization token
+    # Set up proxy configuration
+    proxies = {
+        "http": "http://172.31.37.232:8080",
+        "https": "http://172.31.37.232:8080"
+    }
 
     # Get the MAC address to use as device ID
     device_id = get_mac_address()
@@ -82,7 +87,7 @@ if __name__ == "__main__":
         if os.path.exists(point_cloud_path):
             try:
                 while True:
-                    upload_files_in_folder(url, point_cloud_path, token, args.patient_id, device_id)
+                    upload_files_in_folder(url, point_cloud_path, token, args.patient_id, device_id, proxies)
             except KeyboardInterrupt:
                 print("\nLoop terminated by user.")
         else:
