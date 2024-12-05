@@ -51,6 +51,8 @@ Assuming your PCL headers are located in a standard directory like **/usr/includ
 and also\
 ```g++ record_azure_display.cpp -o record_azure_display -lk4a `pkg-config --cflags --libs opencv4` -l pcl_io -l pcl_common -I/usr/include/pcl-1.10 -I/usr/include/eigen3```
 
+### Mention server IP/URL and proxy in the setup files
+To send the data to Mini_PC, URL and proxy Ips are in setup_recordings_xavier.sh and setup_recordings_xavier_display.sh files.
 
 ## Start the recordings without display
 Make sure the files are executable and edit the code, set the parameters according to the desired values, and generate binaries using the command given above.\
