@@ -15,16 +15,21 @@ fi
 # Assign the first argument as the patient_id
 PATIENT_ID=$1
 
+# Define server URL and Proxy
+URL="http://172.27.130.93:3000/upload"
+PROXY="http://172.31.37.232:8080"
+
+
 # Run the record_azure_display command in the background and store the process ID
 /home/$USERNAME/uci_data_recording/record_azure_display & record_azure_display_pid=$!
 python3 /home/$USERNAME/uci_data_recording/record_audio.py & record_audio_pid=$!
 # Wait for 5 seconds
 sleep 5
 
-# Pass the patient_id to the Python scripts when running them in the background
-python3 /home/$USERNAME/uci_data_recording/rgb_uploading.py --patient_id $PATIENT_ID & rgb_pid=$!
-python3 /home/$USERNAME/uci_data_recording/point_cloud_uploading.py --patient_id $PATIENT_ID & pc_pid=$!
-python3 /home/$USERNAME/uci_data_recording/audio_uploading.py --patient_id $PATIENT_ID & audio_pid=$!
+# Pass the patient_id along with the server URL and Proxy to the Python scripts when running them in the background
+python3 /home/$USERNAME/uci_data_recording/rgb_uploading.py --patient_id $PATIENT_ID --url $URL --proxy $PROXY & rgb_pid=$!
+python3 /home/$USERNAME/uci_data_recording/point_cloud_uploading.py --patient_id $PATIENT_ID --url $URL --proxy $PROXY & pc_pid=$!
+python3 /home/$USERNAME/uci_data_recording/audio_uploading.py --patient_id $PATIENT_ID --url $URL --proxy $PROXY & audio_pid=$!
 
 # Trap Ctrl+C and forcefully terminate processes
 trap 'kill -9 $record_azure_display_pid $record_audio_pid $rgb_pid $pc_pid $audio_pid' INT

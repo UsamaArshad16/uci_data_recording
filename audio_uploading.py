@@ -63,16 +63,21 @@ if __name__ == "__main__":
     # Argument parsing to get the patient ID from the command line
     parser = argparse.ArgumentParser(description="Upload audio files to a local server.")
     parser.add_argument("-p", "--patient_id", required=True, help="Specify the patient ID")
+    parser.add_argument("-u", "--url", required=True, help="Specify the server URL")
+    parser.add_argument("-x", "--proxy", required=True, help="Specify the proxy")
     args = parser.parse_args()
 
     # Set up the server URL and authorization token
-    url = "http://172.27.130.93:3000/upload"  # Local server URL
-    token = "token1_here"  # Authorization token
+    url = args.url
+    token = "token1_here"
     # Set up proxy configuration
-    proxies = {
-        "http": "http://172.31.37.232:8080",
-        "https": "http://172.31.37.232:8080"
-    }
+    proxies = {}
+    if args.proxy:
+        proxies = {
+            "http": args.proxy,
+            "https": args.proxy
+        }
+
     # Get the MAC address to use as device ID
     device_id = get_mac_address()
 
