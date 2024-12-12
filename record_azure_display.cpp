@@ -22,7 +22,7 @@
 
 #define FPS 15
 #define timeout_person_detection 10
-double max_size = 15; // in GBs
+double max_size = 200; // in GBs
 #define FRAME_INTERVAL (1000000 / FPS)
 
 bool personDetected = false; // Flag to track if a person is detected
